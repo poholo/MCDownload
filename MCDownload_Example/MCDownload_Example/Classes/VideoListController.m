@@ -7,7 +7,8 @@
 #import "VideoListDataVM.h"
 #import "VideoDto.h"
 #import "MCDtoDownloadService.h"
-#import "../../../SDK/Core/MCDto+DownloadInfo.h"
+#import "MCDto+DownloadInfo.h"
+#import "VideoDownloadCell.h"
 
 
 @interface VideoListController () <DtoDownloadServiceDelegate>
@@ -23,7 +24,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:NSStringFromClass([UITableViewCell class])];
+    self.title = @"MCDownload";
+
+    [self.tableView registerClass:[VideoDownloadCell class] forCellReuseIdentifier:NSStringFromClass([VideoDownloadCell class])];
 
     [self.dataVM refresh];
     __weak typeof(self) weakSelf = self;
@@ -40,10 +43,14 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([UITableViewCell class]) forIndexPath:indexPath];
+    VideoDownloadCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([VideoDownloadCell class]) forIndexPath:indexPath];
     VideoDto *dto = self.dataVM.dataList[indexPath.row];
-    cell.textLabel.text = dto.name;
+    [cell loadData:dto];
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [VideoDownloadCell height];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -55,27 +62,33 @@
 #pragma mark - DtoDownloadServiceDelegate
 
 - (void)downloadStarted:(id)download {
-
+    [self __downloadInfo:download];
 }
 
 - (void)downloadChange:(id)download {
-
+    [self __downloadInfo:download];
 }
 
 - (void)downloadCancel:(id)download {
-
+    [self __downloadInfo:download];
 }
 
 - (void)downloadFinish:(id)download {
-
+    [self __downloadInfo:download];
 }
 
 - (void)downloadFail:(id)download {
-
+    [self __downloadInfo:download];
 }
 
 - (void)downloading:(id)download {
+    [self __downloadInfo:download];
+}
 
+- (void)__downloadInfo:(id)download {
+    NSInteger idx = [self.dataVM.dataList indexOfObject:download];
+    VideoDownloadCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:idx inSection:0]];
+    [cell loadData:download];
 }
 
 #pragma mark - getter

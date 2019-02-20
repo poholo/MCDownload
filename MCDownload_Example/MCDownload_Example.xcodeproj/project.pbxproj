@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A66600864DDBB304472CE5A /* VideoDownloadCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A66679FBE2E3E2EE75249B4 /* VideoDownloadCell.m */; };
 		1A666319B574FCC7C7C57FA5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A666F9567FCBF702FA73A2A /* Main.storyboard */; };
 		1A6665B9B014C9D0CC91325F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A666FC9E6D29BE68D50535F /* LaunchScreen.storyboard */; };
 		1A666949277AFB524A401B52 /* VideoListDataVM.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A6661BEBB7F31998E1251F4 /* VideoListDataVM.m */; };
@@ -22,6 +23,7 @@
 
 /* Begin PBXFileReference section */
 		0160D4B28C3D0FC661AD0639 /* Pods-MCDownload_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MCDownload_Example.debug.xcconfig"; path = "Target Support Files/Pods-MCDownload_Example/Pods-MCDownload_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		1A6660F42D17C725E8C08F7B /* VideoDownloadCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoDownloadCell.h; sourceTree = "<group>"; };
 		1A6661BE670CAA9C0ADA4C06 /* VideoDto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoDto.m; sourceTree = "<group>"; };
 		1A6661BEBB7F31998E1251F4 /* VideoListDataVM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoListDataVM.m; sourceTree = "<group>"; };
 		1A666383F38DDE59ACE722D6 /* VideoListDataVM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoListDataVM.h; sourceTree = "<group>"; };
@@ -29,6 +31,7 @@
 		1A666489E01D4F012E93E5A4 /* MCDownload.podspec */ = {isa = PBXFileReference; lastKnownFileType = file.podspec; name = MCDownload.podspec; path = ../MCDownload.podspec; sourceTree = "<group>"; };
 		1A6666FE8A9D8A2098657A8B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1A66674F39A1D3FA77BB4BDB /* VideoListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoListController.m; sourceTree = "<group>"; };
+		1A66679FBE2E3E2EE75249B4 /* VideoDownloadCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoDownloadCell.m; sourceTree = "<group>"; };
 		1A666A89737F1049CE22428A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.info; path = Info.plist; sourceTree = "<group>"; };
 		1A666B4E30769D702C40A472 /* VideoListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoListController.h; sourceTree = "<group>"; };
 		1A666D90B5583E2AD4218CCE /* VideoDto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoDto.h; sourceTree = "<group>"; };
@@ -63,6 +66,8 @@
 				1A666B4E30769D702C40A472 /* VideoListController.h */,
 				1A6661BEBB7F31998E1251F4 /* VideoListDataVM.m */,
 				1A666383F38DDE59ACE722D6 /* VideoListDataVM.h */,
+				1A66679FBE2E3E2EE75249B4 /* VideoDownloadCell.m */,
+				1A6660F42D17C725E8C08F7B /* VideoDownloadCell.h */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -230,6 +235,7 @@
 				1A666A0C856C082ACE0B77FC /* VideoDto.m in Sources */,
 				1A666E114C8D7F8416D0EB0F /* VideoListController.m in Sources */,
 				1A666949277AFB524A401B52 /* VideoListDataVM.m in Sources */,
+				1A66600864DDBB304472CE5A /* VideoDownloadCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
