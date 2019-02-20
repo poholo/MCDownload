@@ -24,9 +24,6 @@ static char *const kDownloadState = "downloadState";
 static char *const kHTTPMethod = "kHTTPMethod";
 static char *const kHTTPRequestBody = "kHTTPRequestBody";
 
-NSString *const kLinkSourceDictory = @"LinkSource";
-NSString *const kVideoSourceDictory = @"VideoSourceDictory";
-
 @implementation MCDto (DownloadInfo)
 
 - (NSString *)storePath {
@@ -131,59 +128,24 @@ NSString *const kVideoSourceDictory = @"VideoSourceDictory";
 
 - (void)configureDownloadInfo {
     self.cacheName = self.dtoId;
-    NSString *rootDictionary;
-    NSString *subpath;
-//    if ([self isKindOfClass:[LinkDto class]]) {
-//        self.storePath = [DraftHelper pickerVideoPath];
-//        self.outputStream = [NSOutputStream outputStreamToFileAtPath:self.storePath append:YES];
-//        self.urlText = [(LinkDto *) self realURLString];
-//        return;
-//    } else if ([self isKindOfClass:[LinkRequestDto class]]) {
-//        rootDictionary = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject
-//                stringByAppendingPathComponent:kLinkSourceDictory];
-//        subpath = [NSString stringWithFormat:@"%@.html", self.dtoId];
-//        self.urlText = [(LinkRequestDto *) self url];
-//    } else if ([self isKindOfClass:[VideoDto class]]) {
-//        rootDictionary = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject
-//                stringByAppendingPathComponent:kVideoSourceDictory];
-//        subpath = [NSString stringWithFormat:@"videoCache.mp4"];
-//        VideoDto *videoDto = self;
-//        NSString *result = [CoreSignHelper parseVideo302URL:self.dtoId ak:videoDto.vk];
-//        if ([KTVHTTPCache proxyIsRunning]) {
-//            result = [KTVHTTPCache proxyURLStringWithOriginalURLString:result];
-//        }
-//        self.urlText = result;
-//    }
+    NSAssert(self.storePath, @"storePath == NULL");
+    NSAssert(self.urlText, @"urlText == NULL");
+
 
     NSFileManager *fm = [NSFileManager defaultManager];
-    if (![fm fileExistsAtPath:rootDictionary]) {
-        NSError *error;
-        [fm createDirectoryAtPath:rootDictionary withIntermediateDirectories:YES attributes:nil error:&error];
-        if (error) {
-            MCLog(@"%s _ %@", __func__, error);
-        }
-    }
-
-    self.storePath = [rootDictionary stringByAppendingPathComponent:subpath];
+//    NSString *rootDictionary = [self.storePath ]
+//    if (![fm fileExistsAtPath:rootDictionary]) {
+//        NSError *error;
+//        [fm createDirectoryAtPath:rootDictionary withIntermediateDirectories:YES attributes:nil error:&error];
+//        if (error) {
+//            MCLog(@"%s _ %@", __func__, error);
+//        }
+//    }
     self.outputStream = [NSOutputStream outputStreamToFileAtPath:self.storePath append:YES];
 }
 
 - (NSString *)sourcePath {
-    NSString *rootDictionary;
-    NSString *subpath;
-//    if ([self isKindOfClass:[LinkDto class]]) {
-//        return [DraftHelper pickerVideoPath];
-//    } else if ([self isKindOfClass:[LinkRequestDto class]]) {
-//        rootDictionary = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject
-//                stringByAppendingPathComponent:kLinkSourceDictory];
-//        subpath = [NSString stringWithFormat:@"%@.html", self.dtoId];
-//    } else if ([self isKindOfClass:[VideoDto class]]) {
-//        rootDictionary = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject
-//                stringByAppendingPathComponent:kVideoSourceDictory];
-//        subpath = [NSString stringWithFormat:@"videoCache.mp4"];
-//    }
-
-    return [NSString stringWithFormat:@"%@/%@", rootDictionary, subpath];
+    return self.storePath;
 }
 
 - (BOOL)isExistSource {

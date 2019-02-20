@@ -54,7 +54,12 @@
 
 
 - (void)startDownload {
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    configuration.HTTPMaximumConnectionsPerHost = 5;
+    configuration.sessionSendsLaunchEvents = YES;
+    configuration.timeoutIntervalForRequest = 20.0;//请求超时时间
+    configuration.allowsCellularAccess = YES; //是否允许蜂窝网络下载（2G/3G/4G）
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration
                                                           delegate:self
                                                      delegateQueue:[NSOperationQueue new]];
 
@@ -103,7 +108,7 @@
 
 - (void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
  completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *_Nullable credential))completionHandler {
-    NSLog(@"%s--%zd", __func__, __LINE__);
+    NSLog(@"[Credential]%s--%d", __func__, __LINE__);
     // 如果是请求证书信任，我们再来处理，其他的不需要处理
     if (challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust) {
         NSURLCredential *cre = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
@@ -116,6 +121,7 @@
 // 1.接收到服务器的响应
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveResponse:(NSURLResponse *)response completionHandler:(void (^)(NSURLSessionResponseDisposition))completionHandler {
     // 允许处理服务器的响应，才会继续接收服务器返回的数据
+    NSLog(@"[1.Receive]");
     NSHTTPURLResponse *httpurlResponse = (NSHTTPURLResponse *) response;
     for (MCDto *dto in self.downloadList.allValues) {
         if (dto.task == dataTask) {
@@ -123,13 +129,13 @@
             if (httpurlResponse.statusCode >= 400) {
                 [self.multicastDelegate downloadFail:dto];
                 [self.downloadList removeObjectForKey:dto.dtoId];
-            } else if (expectedLength != -1) {
+            } /*else if (expectedLength != -1) {
 //                    && [FileUtils freeDiskSpace] < expectedLength) {
                 //download error
                 [self.multicastDelegate downloadFail:dto];
                 [self.downloadList removeObjectForKey:dto.dtoId];
                 completionHandler(NSURLSessionResponseCancel);
-            } else {
+            }*/ else {
                 [self.multicastDelegate downloadStarted:dto];
                 dto.allHeaderFields = httpurlResponse.allHeaderFields;
                 if (dto.outputStream == nil) {
@@ -170,7 +176,7 @@
 // 2.接收到服务器的数据（可能调用多次）
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data {
     // 处理每次接收的数据
-    NSLog(@"[DtoDownload]%s--%zd", __func__, __LINE__);
+    NSLog(@"[2.DtoDownload]%s--%d", __func__, __LINE__);
     __weak typeof(self) weakSelf = self;
     [self.downloadList.allValues enumerateObjectsUsingBlock:^(MCDto *dto, NSUInteger idx, BOOL *stop) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
@@ -226,7 +232,7 @@
 // 3.请求成功或者失败（如果失败，error有值）
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
     // 请求完成,成功或者失败的处理
-    NSLog(@"[DtoDownload]%s--%zd", __func__, __LINE__);
+    NSLog(@"[3.DtoDownload]%s--%d--%@", __func__, __LINE__, error);
     __weak typeof(self) weakSelf = self;
     [self.downloadList.allValues enumerateObjectsUsingBlock:^(MCDto *dto, NSUInteger idx, BOOL *stop) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
